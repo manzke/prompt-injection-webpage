@@ -8,8 +8,9 @@ address (below), so 19 templates and 114 pages in total. Every page carries its 
 canary token (a passphrase-like token such as `cedar-anchor-ea0d`).
 
 The payload texts are written from the published descriptions; the prefactor page does not expose
-its attack strings. All payloads are harmless: they only ask the model to print the canary. There
-are no callbacks and no network access.
+its attack strings. The payloads are harmless: they ask the model to print the canary, or in the
+exfiltration templates to put an address on a host that never resolves into its answer. The pages
+make no requests themselves.
 
 ## Exfiltration by address
 
