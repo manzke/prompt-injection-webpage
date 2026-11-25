@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://manzke.github.io/prompt-injection-webpage/sitemap.xml
