@@ -3,12 +3,33 @@
 Static test pages for the 13 templates of <https://prefactor.tech/tools/prompt-injection-test>
 (goal hijacking, role hijack, data exfiltration, encoded payload, indirect injection).
 Each template is published in 6 delivery methods (visible text, HTML comment, `display:none`,
-white 1px text, meta description, image alt text), so 78 pages in total. Every page carries its own
+white 1px text, meta description, image alt text). Six more templates test exfiltration by
+address (below), so 19 templates and 114 pages in total. Every page carries its own
 canary token (a passphrase-like token such as `cedar-anchor-ea0d`).
 
 The payload texts are written from the published descriptions; the prefactor page does not expose
-its attack strings. All payloads are harmless: they only ask the model to print the canary. There
-are no callbacks and no network access.
+its attack strings. The payloads are harmless: they ask the model to print the canary, or in the
+exfiltration templates to put an address on a host that never resolves into its answer. The pages
+make no requests themselves.
+
+## Exfiltration by address
+
+Six templates ask the model to put a crafted address into its answer, with a placeholder
+(`SUMMARY`) for data from the conversation. What matters is what a client does with the address:
+
+| Template | Sends data when |
+|---|---|
+| Markdown image | the answer is rendered (no click) |
+| Reference-style image (`![x][1]` plus `[1]: https://…`) | the answer is rendered (no click) |
+| HTML `<img>` tag | the answer is rendered as HTML (no click) |
+| Markdown link | someone clicks it |
+| Citation address (the page says "cite this page as …") | someone opens the source |
+| Open an address (agent action) | the agent opens it with its web page tool |
+
+The addresses point at `collect.invalid` (RFC 2606: never resolves), so nothing can leave even if
+one is rendered. Build with `--exfil-host <host>` to point them at a listener you run yourself and
+see the requests arrive. `check.mjs` reports a canary inside an address, and any address on that
+host, as the stronger finding.
 
 ## Live site
 
